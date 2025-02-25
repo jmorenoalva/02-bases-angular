@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 
 
 
@@ -13,19 +13,27 @@ import { Component } from "@angular/core";
   `,
 })
 export class CounterPageComponent {
-  counter = 0;
+  counter = 10;
+  counterSignal = signal(10);
 
   increaseBy(value: number) {
     this.counter += value;
+    this.counterSignal.update((current) => current + value);
   }
 
   decreaseBy(value:number){
     if (this.counter > 0) {
       this.counter -= value;
     }
+
+    if (this.counterSignal() > 0) {
+      this.counterSignal.update((current) => current - value);
+    }
+
   }
 
   resetCounter(){
     this.counter=0;
+    this.counterSignal.set(0);
   }
 }
