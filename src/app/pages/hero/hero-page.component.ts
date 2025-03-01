@@ -1,15 +1,28 @@
-import { Component, signal } from "@angular/core";
+import { UpperCasePipe } from "@angular/common";
+import { Component, computed, signal } from "@angular/core";
 
 
 
 @Component({
   templateUrl: './hero-page.component.html',
+  imports: [UpperCasePipe],
 })
 export class HeroPageComponent {
   name = signal('Ironman');
   age = signal(45);
 
-  constructor() {}
+  heroDescription = computed(() => {
+    const description = `${this.name()} - ${this.age()}`;
+    return description;
+  });
+
+  capitalizedName = computed(
+    () => this.name().toUpperCase()
+    // const nameUpperCase = this.name().toUpperCase();
+    // return nameUpperCase;
+  );
+
+  // constructor() {}
 
   getHeroDescription() {
     return `${this.name()} - ${this.age()}`;
@@ -29,7 +42,7 @@ export class HeroPageComponent {
     this.age.set(45);
   }
 
-  changeAge(){
+  changeAge() {
     // this.age.update((v)=>60);
     this.age.set(60);
   }
